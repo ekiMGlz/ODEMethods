@@ -52,18 +52,6 @@ def EMPStep(f, wi, ti, h):
     
     return w
     
-def RK4(f, y0, I, m):
-    h, T, W = initODE(y0, I, m)
-    
-    for i in range(m):
-        S0 = f(T[i] , W[:,i])
-        S1 = f(T[i] + h/2, W[:,i] + h/2*S0)
-        S2 = f(T[i] + h/2, W[:,i] + h/2*S1)
-        S3 = f(T[i] + h, W[:,i] + h*S2)
-        W[:,i+1] = W[:,i] + h/6*(S0+2*S1+2*S2+S3)
-    
-    return T, W
-    
 def RK4Step(f, wi, ti, h):
     S0 = f(ti , wi)
     S1 = f(ti + h/2, wi + h/2*S0)

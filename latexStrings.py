@@ -61,3 +61,21 @@ def latexList(l, listName, eq=True, complx=False, form='%0.0', cmplxForm='%+0.0f
     if eq:
         s += '\n \\]'
     return s
+    
+def latexTable(header, data, colformat):
+    s=''
+    s += '\\begin{tabular}{'+colformat+'} \n \\hline \n'
+    for entry in header:
+        s += str(entry) + ' '
+        s += '& '
+    s = s[:-2] + '\\\\ \hline \n'
+    
+    for row in data:
+        for entry in row:
+            s += str(entry) + ' '
+            s += '& '
+        s=s[:-2]
+        s += '\\\\ \n'
+    s += '\\hline \n \\end{tabular}'
+    
+    return s
