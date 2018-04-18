@@ -44,7 +44,7 @@ def latexVector(v, vecName, eq=True, complx=False, form='%0.0f', cmplxForm='%+0.
         s += '\n \\]'
     return s
 
-def latexList(l, listName, eq=True, complx=False, form='%0.0', cmplxForm='%+0.0fi'):
+def latexList(l, listName, eq=True, complx=False, form='%0.0f', cmplxForm='%+0.0fi'):
     s=''
     if eq:
         s ='\\[ \n ' + listName + ' = \n'

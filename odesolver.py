@@ -51,6 +51,12 @@ def EMPStep(f, wi, ti, h):
     w = wi + h*S1
     
     return w
+
+def IMPStep(f, wi, ti, h):
+    F = lambda x : x - wi - h*f(ti+h/2, 1/2*(wi + x))
+    guess  = wi + h*f(ti,wi)
+    w = op.newton_krylov(F, guess) 
+    return w
     
 def RK4Step(f, wi, ti, h):
     S0 = f(ti , wi)
@@ -116,6 +122,11 @@ def solve(f, y0, I, m = 1e3, method = 'RK4', tol = 1e-4, maxStep = np.inf):
         
         for i in range(m):
             W[:,i+1]=EMPStep(f, W[:,i], T[i], h)
+        
+    elif method == 'implicit midpoint':
+        
+        for i in range(m):
+            W[:,i+1]=IMPStep(f, W[:,i], T[i], h)
         
     elif method == 'rk4':
         
