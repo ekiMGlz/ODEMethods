@@ -285,14 +285,17 @@ def RK23Step(f, wj, tj, hj, tol, maxStep, xp):
         The next suggestedd step.
     """
     
+    #Define the target tolerance for the step
     Tj = tol*max(np.linalg.norm(wj), 1)
     
+    #Initial definition of states to calculate the approximated error
     S1 = f(tj, wj)
     S2 = f(tj + hj, wj + hj*S1)
     S3 = f(tj + hj/2, wj + hj*(S1 + S2)/4)
     
     e = hj*np.linalg.norm(S1 - 2*S3 + S2)/3
     
+    #Until the tolerance is met, contiue to re-calculate the step hj
     while e > Tj:
         
         hj = pow(Tj/(2*e),(1/3))*hj
@@ -300,13 +303,15 @@ def RK23Step(f, wj, tj, hj, tol, maxStep, xp):
         S3 = f(tj + hj/2, wj + hj*(S1 + S2)/4)
         e = hj*np.linalg.norm(S1 - 2*S3 + S2)/3
     
+    #If extrapolating, use the RK3 approximation, else use RK2
     if xp:
         w = wj + hj/6*(S1 + 4*S3 + S2)
     else:
         w = wj + hj/2(S1+S2)
     
-    nexth = pow(Tj/(2*e),(1/3))*hj
-    return w, tj+hj, min(nexth, maxStep)
+    #Calculate the next step suggestion, taking into account the maximum step
+    nexth = min(pow(Tj/(2*e),(1/3))*hj, maxStep)
+    return w, tj+hj, nexth
     
 
 def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf, initialStep=0.1, xp = True):
@@ -402,6 +407,7 @@ def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf, init
             W[:,i+1]=RK4Step(f, W[:,i], T[i], h)
         
     elif method in ['runge-kutta 2/3', 'rk23']:
+        #Initialize t, h and w
         t = I[0]
         h = initialStep
         try:
@@ -411,7 +417,7 @@ def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf, init
             n = 1
             w = np.array([y0])
         
-        
+        #Store the appriximations and times in a list
         T = [t]
         W = [w]
         
@@ -420,11 +426,14 @@ def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf, init
             T.append(t)
             W.append(w)
             
+            #Check if the proposed step goes beyond the final time
             if t+h>I[1]:
                 h = I[1]-t
-           
+        
+        #Format the list of times and approximations into arrays, transposing the approximation for consistency with other methods  
         T = np.array(T) 
         W = np.array(W).T
     else:
         raise ValueError('Unsupported method')
+    
     return T,W
