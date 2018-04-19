@@ -249,45 +249,67 @@ def RK4Step(f, wi, ti, h):
     
     return w
 
-def RK23Step(f, wj, tj, hj, tol, maxStep=np.inf):
+def RK23Step(f, wj, tj, hj, tol, maxStep, xp):
     """
-    Embedded RK2/3 step. UNFINISHED
-    TODO
-        Smart step resizing
-    IN
-        f - function
-        tj - Start time
-        wj - Last aproximation
-        hj - suggested step
-        tol - tolerance
-        maxStep - maximum step size
-    OUT
-       tn - End time
-       wn - approximation
-       hn - next suggested step
+    An embedded Runge-Kutta 2/3 pair step for approxmating ordinary differential equations.
+    The step is given by::
+        w = wj + hj/6*(S1 + 4*S3 + S2)  if extrapolating
+        w = wj + hj/2(S1+S2)            else
+    hj is dynamically calculated in order to fit the relative tolerance criteria. 
+    
+    Parameters
+    ----------
+    f : function
+        Right hand side of the ordinary differential equation.
+    wj : (N) double ndarray
+        Previous approximation.
+    tj : double
+        Previous time.
+    hj : double
+        Suggested step.
+    tol : double
+        Relative tolerance criteria. Default is 1e-4.
+    maxStep : double
+        Maximum step size.
+    xp : boolean
+        Whether to extrapolate the solution (i.e. take the higher order solution).
+    
+    
+    Returns
+    -------
+    w : (N) double ndarray
+        The approximation at t.
+    t : double
+        The time of the new approximation.
+    h : double
+        The next suggestedd step.
     """
+    
+    Tj = tol*max(np.linalg.norm(wj), 1)
     
     S1 = f(tj, wj)
     S2 = f(tj + hj, wj + hj*S1)
     S3 = f(tj + hj/2, wj + hj*(S1 + S2)/4)
+    
     e = hj*np.linalg.norm(S1 - 2*S3 + S2)/3
     
-    
-    
-    while e > tol*max(np.linalg.norm(wj), 1):
+    while e > Tj:
         
-        hj=hj/2
+        hj = pow(Tj/(2*e),(1/3))*hj
         S2 = f(tj + hj, wj + hj*S1)
         S3 = f(tj + hj/2, wj + hj*(S1 + S2)/4)
         e = hj*np.linalg.norm(S1 - 2*S3 + S2)/3
     
+    if xp:
+        w = wj + hj/6*(S1 + 4*S3 + S2)
+    else:
+        w = wj + hj/2(S1+S2)
     
-    w = wj + hj/6*(S1 + 4*S3 + S2)
-    
-    return w, tj+hj, min(2*hj, maxStep)
+    nexth = pow(Tj/(2*e),(1/3))*hj
+    return w, tj+hj, min(nexth, maxStep)
     
 
-def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf):
+def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf, initialStep=0.1, xp = True):
     """
     Solves an initial problem value::
         y'(t)=f(t,y); y(t0)=y0
@@ -323,8 +345,12 @@ def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf):
         Method to use. Case insensitive. Default is 'RK4'.
     tol : double, optional
         Relative tolerance criteria for dynamic step methods. Default is 1e-4.
+    initialStep: double, optional
+        Suggested first step for dynamic step methods. Default is 1e-1
     maxStep : double, optional
         Maximum step size for dynamic step methods. Default is np.inf.
+    xp : boolean, optional
+        Whether to extrapolate the solution when using embedded RK pairs (i.e. take the higher order solution). Default is True
     
     
     Returns
@@ -377,7 +403,7 @@ def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf):
         
     elif method in ['runge-kutta 2/3', 'rk23']:
         t = I[0]
-        h = 1/10
+        h = initialStep
         try:
             n = len(y0)
             w = np.array(y0)
@@ -390,7 +416,7 @@ def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf):
         W = [w]
         
         while t<I[1]:
-            w, t, h = RK23Step(f, w, t, h, tol, maxStep)
+            w, t, h = RK23Step(f, w, t, h, tol, maxStep, xp)
             T.append(t)
             W.append(w)
             
