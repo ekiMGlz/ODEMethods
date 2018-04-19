@@ -29,7 +29,7 @@ def initODE(y0, I, m):
     h = (I[1]- I[0])/m
     T = np.linspace(I[0],I[1],m+1)
     
-    #Seve the dimmension of y0 as n, throws exception when y0 is a number, in which case n = 1
+    #Save the dimmension of y0 as n, throws exception when y0 is a number, in which case n = 1
     try:
         n = len(y0)
     except Exception:
@@ -254,8 +254,6 @@ def RK23Step(f, wj, tj, hj, tol, maxStep=np.inf):
     Embedded RK2/3 step. UNFINISHED
     TODO
         Smart step resizing
-        Higher dimmension for wj
-        Substitute recursion with iteration
     IN
         f - function
         tj - Start time
@@ -269,20 +267,27 @@ def RK23Step(f, wj, tj, hj, tol, maxStep=np.inf):
        hn - next suggested step
     """
     
-    S1 = f(tj,wj)
-    S2 = f(tj,wj+hj*S1)
-    S3 = f(tj,wj + hj*(S1+S2)/4)
-    e = hj*abs(S1-2*S3+S2)/3
+    S1 = f(tj, wj)
+    S2 = f(tj + hj, wj + hj*S1)
+    S3 = f(tj + hj/2, wj + hj*(S1 + S2)/4)
+    e = hj*np.linalg.norm(S1 - 2*S3 + S2)/3
     
-    if e < tol*max(abs(wj), 1):
+    
+    
+    while e > tol*max(np.linalg.norm(wj), 1):
         
-        w = wj+hj/6*(S1+4*S3+S2)
-        
-        return [w, tj+hj, min(2*hj,maxStep)]
-    else:
-        return RK23Step(f, wj, tj, hj/2, tol, maxStep)
+        hj=hj/2
+        S2 = f(tj + hj, wj + hj*S1)
+        S3 = f(tj + hj/2, wj + hj*(S1 + S2)/4)
+        e = hj*np.linalg.norm(S1 - 2*S3 + S2)/3
+    
+    
+    w = wj + hj/6*(S1 + 4*S3 + S2)
+    
+    return w, tj+hj, min(2*hj, maxStep)
+    
 
-def solve(f, y0, I, m = 1e3, method = 'RK4', tol = 1e-4, maxStep = np.inf):
+def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf):
     """
     Solves an initial problem value::
         y'(t)=f(t,y); y(t0)=y0
@@ -313,7 +318,7 @@ def solve(f, y0, I, m = 1e3, method = 'RK4', tol = 1e-4, maxStep = np.inf):
     I : tuple (t0 tf)
         The interval (t0, tf) over which to approximate the solution.
     m : int, optional
-        Number of steps in the approximation. Default is 1e3.
+        Number of steps in the approximation. Default is 1000.
     method : string, optional
         Method to use. Case insensitive. Default is 'RK4'.
     tol : double, optional
@@ -330,7 +335,10 @@ def solve(f, y0, I, m = 1e3, method = 'RK4', tol = 1e-4, maxStep = np.inf):
         The approximations of y(T).
     """
     
+    #Initialize the results
     h, T, W = initODE(y0, I, m)
+    
+    #Casefold the method and decide which one to use
     method = method.casefold()
     if method in ['explicit euler', 'ee']:
         
@@ -369,7 +377,14 @@ def solve(f, y0, I, m = 1e3, method = 'RK4', tol = 1e-4, maxStep = np.inf):
         
     elif method in ['runge-kutta 2/3', 'rk23']:
         t = I[0]
-        w = y0
+        h = 1/10
+        try:
+            n = len(y0)
+            w = np.array(y0)
+        except Exception:
+            n = 1
+            w = np.array([y0])
+        
         
         T = [t]
         W = [w]
@@ -383,7 +398,7 @@ def solve(f, y0, I, m = 1e3, method = 'RK4', tol = 1e-4, maxStep = np.inf):
                 h = I[1]-t
            
         T = np.array(T) 
-        W = np.array(W)
+        W = np.array(W).T
     else:
         raise ValueError('Unsupported method')
     return T,W
