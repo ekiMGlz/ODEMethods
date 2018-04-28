@@ -52,8 +52,10 @@ def EEStep(f, wi, ti, h):
     ----------
     f : function
         Right hand side of the ordinary differential equation.
-    y0 : (N) double ndarray
-        The initial values for y.
+    wi : (N) double ndarray
+        Previous approximation.
+    ti : double
+        Previous time.
     h : double
         The step taken.
     
@@ -80,8 +82,10 @@ def IEStep(f, wi, ti, h):
     ----------
     f : function
         Right hand side of the ordinary differential equation.
-    y0 : (N) double ndarray
-        The initial values for y.
+    wi : (N) double ndarray
+        Previous approximation.
+    ti : double
+        Previous time.
     h : double
         The step taken.
     
@@ -108,8 +112,10 @@ def ETStep(f, wi, ti, h):
     ----------
     f : function
         Right hand side of the ordinary differential equation.
-    y0 : (N) double ndarray
-        The initial values for y.
+    wi : (N) double ndarray
+        Previous approximation.
+    ti : double
+        Previous time.
     h : double
         The step taken.
     
@@ -138,8 +144,10 @@ def ITStep(f, wi, ti, h):
     ----------
     f : function
         Right hand side of the ordinary differential equation.
-    y0 : (N) double ndarray
-        The initial values for y.
+    wi : (N) double ndarray
+        Previous approximation.
+    ti : double
+        Previous time.
     h : double
         The step taken.
     
@@ -168,8 +176,10 @@ def EMPStep(f, wi, ti, h):
     ----------
     f : function
         Right hand side of the ordinary differential equation.
-    y0 : (N) double ndarray
-        The initial values for y.
+    wi : (N) double ndarray
+        Previous approximation.
+    ti : double
+        Previous time.
     h : double
         The step taken.
     
@@ -198,8 +208,10 @@ def IMPStep(f, wi, ti, h):
     ----------
     f : function
         Right hand side of the ordinary differential equation.
-    y0 : (N) double ndarray
-        The initial values for y.
+    wi : (N) double ndarray
+        Previous approximation.
+    ti : double
+        Previous time.
     h : double
         The step taken.
     
@@ -230,8 +242,10 @@ def RK4Step(f, wi, ti, h):
     ----------
     f : function
         Right hand side of the ordinary differential equation.
-    y0 : (N) double ndarray
-        The initial values for y.
+    wi : (N) double ndarray
+        Previous approximation.
+    ti : double
+        Previous time.
     h : double
         The step taken.
     
