@@ -319,11 +319,8 @@ Ahora apliquemos el metodo de Euler Explicito con paso \(h=0.1\):
         \PY{n}{exact} \PY{o}{=} \PY{k}{lambda} \PY{n}{t}\PY{p}{,} \PY{n}{t0}\PY{p}{,} \PY{n}{y0} \PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{y0}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{t0}\PY{p}{)}\PY{o}{+}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{t0}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{p}{)}
         \PY{n}{I} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
         \PY{n}{y0} \PY{o}{=} \PY{l+m+mi}{1}
-        
         \PY{n}{y1} \PY{o}{=} \PY{n}{exact}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
-        
         \PY{n}{T}\PY{p}{,} \PY{n}{W} \PY{o}{=} \PY{n}{odesolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{n}{y0}\PY{p}{,}\PY{n}{I}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Explicit Euler}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        
         \PY{n}{globalError} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{y1}\PY{p}{)}
         \PY{n}{localErrors} \PY{o}{=} \PY{p}{[}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{exact}\PY{p}{(}\PY{n}{T}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{T}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{]}
         \PY{n}{maxLocalError} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{localErrors}\PY{p}{)}
@@ -357,24 +354,16 @@ intervalo \([0,1]\):
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}2}]:} \PY{n}{res} \PY{o}{=} \PY{p}{[}\PY{p}{]}
         \PY{n}{globalErrors}\PY{o}{=}\PY{p}{[}\PY{p}{]}
-        \PY{n}{steps} \PY{o}{=} \PY{p}{[}\PY{p}{]}
-        
         \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{:}
-            
             \PY{n}{h} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{o}{*}\PY{o}{\PYZhy{}}\PY{n}{k}\PY{p}{)}
             \PY{n}{m} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{p}{(}\PY{n}{I}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{I}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{n}{h}\PY{p}{)}
-            
             \PY{n}{T}\PY{p}{,} \PY{n}{W} \PY{o}{=} \PY{n}{odesolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{f}\PY{p}{,} \PY{n}{y0}\PY{p}{,} \PY{n}{I}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Explicit Euler}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-            
             \PY{n}{g} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{m}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{y1}\PY{p}{)}
             \PY{n}{globalErrors}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{g}\PY{p}{)}
-            
             \PY{n}{localErrors} \PY{o}{=} \PY{p}{[}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{exact}\PY{p}{(}\PY{n}{T}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{T}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{]}
             \PY{n}{maxLocalError} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{localErrors}\PY{p}{)}
-            
             \PY{n}{eoc} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NaN}\PY{l+s+s2}{\PYZdq{}} \PY{k}{if} \PY{n}{k}\PY{o}{==}\PY{l+m+mi}{0} \PY{k}{else} \PY{n}{log}\PY{p}{(}\PY{n}{g}\PY{o}{/}\PY{n}{prevg}\PY{p}{)}\PY{o}{/}\PY{n}{log}\PY{p}{(}\PY{n}{h}\PY{o}{/}\PY{n}{prevh}\PY{p}{)}
             \PY{n}{res}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{[}\PY{n}{k}\PY{p}{,} \PY{n}{h}\PY{p}{,} \PY{n}{maxLocalError}\PY{p}{,} \PY{n}{eoc}\PY{p}{]}\PY{p}{)}
-            
             \PY{n}{prevh} \PY{o}{=} \PY{n}{h}
             \PY{n}{prevg} \PY{o}{=} \PY{n}{g}
 \end{Verbatim}
@@ -418,6 +407,181 @@ terminos del tamaño del paso, como se muestra en la siguiente grafica:
     Podemos observar que, en escala logaritmica, el error global y el paso
 tienen una relacion lineal, que es lo esperado de un metodo con error
 global de orden \(O(h)\).
+
+\section*{Ejercicio 2}
+
+Tomando el PVI (\ref{eq:1}) y la solución general de la ecuación
+(\ref{eq:2}) del ejercicio anterior aplicaremos el método del Trapecio
+explícito con paso \(h_1=0.1\). En el ejercicio 1 se argumentó la
+existencia y unicidad del PVI.
+
+Calculemos el error global en el punto t = 1:
+\[E_{Trapecio}(h_1)=\left|w_{10}-y(1) \right|\] con \(w_{10}\) la
+aproximación del método en t=1.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{n}{f} \PY{o}{=} \PY{k}{lambda} \PY{n}{t}\PY{p}{,} \PY{n}{y} \PY{p}{:} \PY{n}{y}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{t}\PY{p}{)}
+        \PY{n}{exact} \PY{o}{=} \PY{k}{lambda} \PY{n}{t}\PY{p}{,} \PY{n}{t0}\PY{p}{,} \PY{n}{y0} \PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{y0}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{t0}\PY{p}{)}\PY{o}{+}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{t0}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+        \PY{n}{I} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{y0} \PY{o}{=} \PY{l+m+mi}{1}
+        \PY{n}{y1} \PY{o}{=} \PY{n}{exact}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{T}\PY{p}{,} \PY{n}{W} \PY{o}{=} \PY{n}{odesolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{n}{y0}\PY{p}{,}\PY{n}{I}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Explicit Trapezoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{globalError} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{y1}\PY{p}{)}
+\end{Verbatim}
+   
+    $$E_{Trapecio}(h_1)= 0.0046374955401011775$$
+    
+    Veamos lo que sucede cuando usamos el paso \(h_2:=\frac{h_1}{2}=0.05\) y
+calculemos el correspondiende error global en t=1:
+\[E_{Trapecio}(h_2)=\left|w_{20}-y(1) \right|\]
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{T}\PY{p}{,} \PY{n}{W} \PY{o}{=} \PY{n}{odesolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{n}{y0}\PY{p}{,}\PY{n}{I}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Explicit Trapezoid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{globalError} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{y1}\PY{p}{)}
+\end{Verbatim}
+   
+    $$E_{Trapecio}(h_2)= 0.0012209778161409446$$
+    
+    Ahora calcuemos el error global en t=1 usando el método Runge-Kutta 4
+usando \(h_1=0.1\) : \[E_{RK4}(h_1)=\left|w_{10}-y(1) \right|\]
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{T}\PY{p}{,} \PY{n}{W} \PY{o}{=} \PY{n}{odesolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{n}{y0}\PY{p}{,}\PY{n}{I}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RK4}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{globalError} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{y1}\PY{p}{)}
+\end{Verbatim}
+
+    $$E_{RK4}(h_1)= 2.334812125859287e-06$$
+    
+    \begin{table}[h]
+\centering
+\begin{tabular}{|l|lll|}
+\hline
+                                   & E$_{Trapecio}(h_1)$   & E$_{Trapecio}(h_2)$   & E$_{RK4}(h_1)$                       \\ \hline
+Error (global en t = 1)            & 4.63749554010 $\times$ 10$^{-3}$& 1.22097781614 $\times$ 10$^{-3}$& 2.3348121258 $\times$ 10$^{-6}$ \\
+N\'umero de estados & 20                    & 40                    & 40                                  \\ \hline
+\end{tabular}
+\end{table}
+
+    En la tabla anterior notamos lo siguiente:
+\[E_{RK4}(h_1)<E_{Trapecio}(h_2)<E_{Trapecio}(h_1)\]
+
+    Podemos observar que mediante el método del Trapecio explícito con paso
+\(h_2\) obtenemos un error aproximadamente 4 veces menor que con paso
+\(h_1\) ya que: \[E_{Trapecio}(h_1)=O(h_1^2)\]
+\[   \Rightarrow E_{Trapecio}(h_2)=O(h_2^2)=O\left(\frac{h_1}{2}\right)^2\]
+\[ \Rightarrow E_{Trapecio}(h_2) \approx \frac{1}{4}O(h_1^2)=\frac{1}{4}E_{Trapecio}(h_1) \]
+El problema es que el método con \(h_2\) necesita de 40 estados, el
+doble con respecto a usar \(h_1\).
+
+    Por otro lado, el método Runge-Kutta 4 necesita de 40 estados al igual
+que el Trapecio explícito con \(h_2\) pero observando los resultados de
+la tabla notamos que el error global \(E_{RK4}\) es menor a
+\(E_{Trapecio}(h_2)\) por un factor de \(10^3\) aproximadamente.
+
+    Por lo tanto, para reducir el error, es preferible usar el método
+Runge-Kutta 4 ya que, por los mismos 40 estados requeridos, se obtiene
+un error menor al del Trapecio explícito con \(h_2\).
+
+\section*{Ejercicio 3}
+
+Tomemos el siguiente PVI:
+
+\begin{equation} \label{eq:3}
+ \begin{array}{c} y_1' = - y_1 + y_2 \\
+y_2' =- y_1 - y_2 \end{array} 
+\qquad \mbox{con} \qquad \begin{array}{c}
+y_1(0)=0 \\ y_2(0)=1 \end{array} \qquad \mbox{para } t\in [0,1] \qquad 
+\end{equation}
+Con solución exacta
+\(\overrightarrow{y}(t)=\left(\begin{array}{c} y_1(t) \\ y_2(t)\end{array} \right)\)
+dada por :
+
+\begin{equation} \label{eq:4}
+ \begin{array}{c} y_1(t) = e^{-t}\sin(t) \\
+y_2(t) = e^{-t}\cos(t) \end{array}
+\end{equation}
+
+    Sea \(\overrightarrow{W}_j\) el vector de aprximación correspondiente a
+la aplicación del método del Punto Medio Implícito con paso \(h_j\). La
+entrada \(w_i\) es la aproximación en \(t=1\) de \(y_i\) para
+\(i,j \in \{1,2\}\). Definimos \(E_{PMImpl}(h_j)=\Vert G_j \Vert _2\) el error
+global en \(t=1\) para \(j \in \{1,2\}\), con \(\overrightarrow{G}_j:=\vert W_j-\overrightarrow{y}(1) \vert\)
+\(\quad\) cuya entrada \(g_i=\vert w_1-y_i(1) \vert\).
+
+    Aplicaremos el método para \(h_1=0.1\) y \(h_2=0.01\):
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{n}{f} \PY{o}{=} \PY{k}{lambda} \PY{n}{t}\PY{p}{,} \PY{n}{y} \PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{+}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+        \PY{n}{soln} \PY{o}{=} \PY{k}{lambda} \PY{n}{t}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{T}\PY{p}{)}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{T}\PY{p}{)}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+        \PY{n}{y0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+        \PY{n}{T}\PY{p}{,}\PY{n}{W} \PY{o}{=} \PY{n}{odesolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{f}\PY{p}{,} \PY{n}{y0}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{n}{method} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Implicit Midpoint}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{globalError1}\PY{o}{=}\PY{n}{linear}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{soln}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+        \PY{n}{dif}\PY{o}{=}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{soln}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\begin{align*}
+    h_1&=0.1 \\ 
+ \vec{W_1}&= 
+\begin{pmatrix} 
+0.310408 \\ 
+0.198583 \\ 
+\end{pmatrix}\\
+ \vec{G_1} &= 
+\begin{pmatrix} 
+0.000848 \\ 
+0.000183 \\ 
+\end{pmatrix}\\
+ E_{PMImpl}(h_1) &= 0.0008678198131427709
+\end{align*}
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{T}\PY{p}{,}\PY{n}{W} \PY{o}{=} \PY{n}{odesolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{f}\PY{p}{,} \PY{n}{y0}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{,} \PY{n}{method} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Implicit Midpoint}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{globalError2}\PY{o}{=}\PY{n}{linear}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{soln}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{]}\PY{p}{)}
+        \PY{n}{dif}\PY{o}{=}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{soln}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\begin{align*}
+    h_2&=0.01 \\ 
+ \vec{W_2} &= 
+\begin{pmatrix} 
+0.309568 \\ 
+0.198764 \\ 
+\end{pmatrix}\\
+ \vec{G_2} &= 
+\begin{pmatrix} 
+0.000008 \\ 
+0.000002 \\ 
+\end{pmatrix}\\
+ E_{PMImpl}(h_2) &= 8.671073839286167e-06
+\end{align*}
+    
+
+    Sabemos que el método del Punto Medio Implícito con paso $ \hat{h} $ tiene un
+error global de de orden 2. Luego, con \(\hat{h}:=h_1=0.1\) esperamos:
+\[E_{PMImpl}(h_1)=O\left ( h_1^2 \right ) = O \left( 0.1^2 \right)\]
+Y con \(\hat{h}:=h_2=0.01\) esperamos:
+\[E_{PMImpl}(h_2)=O\left ( h_2^2 \right ) = O \left( 0.01^2 \right)\]
+
+    Observamos que: \[E_{PMImpl}(h_1)=O\left ( h_1^2 \right ) \]
+\[  h_2= \frac{h_1}{10}   \Rightarrow      E_{PMImpl}(h_2) =O\left(\frac{h_1}{10}\right)^2 
+\Rightarrow E_{PMImpl}(h_2) \approx \frac{1}{100}O(h_1^2)=\frac{1}{100}E_{PMImpl}(h_1) \]
+
+    Esto implica que el error global del método para \(h_2\) debe ser
+aproximadamente 100 veces menor al error global con el paso \(h_1\). Comparemos esto con nuestros resultados:
+
+\[ E_{PMImpl}(h_2)=8.671073839286167e−06 \approx 8.67819813142771e−06= \frac{1}{100}E_{PMImpl}(h_1) \]
+
+Y vemos que en efecto la reducción del error de \(h_1\) a \(h_2=\frac{h_1}{10}\) es consistente con la teoria.
+
+\section*{Ejercicio 4}
+
+
+
+\section*{Ejercicio 5}
+
+
+
+\section*{Ejercicio 6}
+
 
 
     % Add a bibliography block to the postdoc
