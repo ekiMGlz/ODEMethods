@@ -451,3 +451,38 @@ def solve(f, y0, I, m = 1000, method = 'RK4', tol = 1e-4, maxStep = np.inf, init
         raise ValueError('Unsupported method')
     
     return T,W
+
+def shooting(f, y0, yp0, sol, I, method='RK4', m=1000, tol = 1e-4, maxiter=50):
+    """
+    This function applies the shooting method to a given Boundry Value Problem (BVP).
+
+    Parameters
+    ----------
+    f : function
+        Right hand side of the ordinary differential equation.
+    y0 : double
+        The left hand side restriction of the BVP.
+    yp0 : double
+        Initial guess for y'.
+    sol : double
+        The right hand side restriction of the BVP.
+    I : tuple (t0 tf)
+        The interval (t0, tf) over which to approximate the solution.
+    method : string, optional
+        Method to use. Case insensitive. Default is 'RK4'.
+    m : int, optional
+        Number of steps in the approximation. Default is 1000.
+    tol : double, optional
+        Relative tolerance criteria. Default is 1e-4.
+    maxiter : int, optional
+        max number of iterations for the Newton method to run. Default is 50.
+
+    Returns
+    -------
+    y_init : double
+        The sugested initial value for y' in order to satisfy the BVP.
+
+    """
+    F = lambda yp0 : solve(f, [y0, yp0], I, m,  method = method)[1][0][-1] - sol
+    y_init = op.newton(F, yp0, tol = tol, maxiter=maxiter)
+    return y_init
