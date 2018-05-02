@@ -578,11 +578,127 @@ Y vemos que en efecto la reducción del error de \(h_1\) a \(h_2=\frac{h_1}{10}\
 
 \section*{Ejercicio 5}
 
+Consideremos el PVI (\ref{eq:1}), cuya solucion (\ref{eq:2}) ha sido
+justificada previamente. Utilizemos los métodos:
 
+\begin{itemize}
+    \item Euler Explícito
+    \item Trapecio Explícito
+    \item Punto Medio Explícito 
+    \item RK4 
+\end{itemize}
+Con pasos \(h\in\{1/50,1/100,1/200\}\) para calcular y comparar el error
+global en t=1. Obtenemos como resultados:
+
+\begin{tabular}{{c|r r r r}} 
+ \hline 
+Paso & Euler Explicito & Trapecio Explicito & Punto Medio Implicito & Runge-Kutta 4 \\ \hline 
+0.02 & 0.041788516341 & 0.000201525212813 & 0.00031786426130 & 4.138891895e-09 \\ 
+0.01 & 0.0210985428547 & 5.090600531e-05 & 8.0138760276e-05 & 2.61991317529e-10 \\ 
+0.005 & 0.010601086125 & 1.27925873654e-05 & 2.01192086386e-05 & 1.64810387559e-11 \\ 
+\hline 
+ \end{tabular}
+
+    \begin{center}
+    \includegraphics{fig 5.1.png}
+    \end{center}
+    
+    En la tabla podemos notar los Errores Globales en t=1 de cada método
+coinciden con los órdenes que vimos teóricamente (\(O(h)\) para Euler,
+\(O(h^2)\) para Trapecio y Punto Medio y \(O(h^4)\) para RK4). También
+podemos notar que a pesar de tener el mismo orden, el método del
+trapecio fué más preciso que el método del punto medio para esta ODE.
+
+La gráfica de nuevo confirma esto, pues vemos que la pendiente
+aproxiamda de las rectas de los errores coinside con sus errores
+teoricos.
 
 \section*{Ejercicio 6}
 
+Tomemos el siguiente PVI:
 
+\begin{align*}y'' &= 10y' (1 - y)
+\\ y(0)&=1 \\ y(1) &= 1 - \frac{\pi}{20}
+\end{align*}
+
+Para $t \in [0,1]$. Luego podemos reescribirlo como un sistema de ecuaciones de primer orden de la siguiente manera:
+
+\begin{align*} y_1' &= y_2 \\
+y_2' &= 10 y_2 (1 - y_1) 
+\end{align*}
+
+Con solución exacta dada por :
+
+\begin{equation}
+ \begin{array}{c} 
+     y(t) = 1-\frac{\pi}{20} \tan(\frac{\pi}{4}t) \\
+     y(1) = 1-\frac{\pi}{20}
+ \end{array} 
+\end{equation}
+
+Así, definimos f como
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{n}{f} \PY{o}{=} \PY{k}{lambda} \PY{n}{t}\PY{p}{,} \PY{n}{y} \PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{10}\PY{o}{*}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+        \PY{n}{exact} \PY{o}{=} \PY{k}{lambda} \PY{n}{t} \PY{p}{:} \PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{pi}\PY{o}{/}\PY{l+m+mi}{20}\PY{o}{*}\PY{n}{tan}\PY{p}{(}\PY{n}{pi}\PY{o}{/}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{t}\PY{p}{)}
+\end{Verbatim}
+
+
+    Para aplicar Shooting Method, tomamos una aproximación inicial de
+\(y_2 = 1\)
+
+\[\overrightarrow{y_0}(t) = \left(\begin{array}{c} y_1(t) \\
+y_2(t)\end{array} \right) = \left( \begin{array}{c} 1
+\\ 0 \end{array} \right)\]
+
+y utilizaremos el método de Runge Kutta 4 con 1000 pasos para aproximar
+la función en \(y(1)\)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{y0} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+        \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{W} \PY{o}{=} \PY{n}{odesolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{f}\PY{p}{,} \PY{n}{y0}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{,}  \PY{n}{method} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rk4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ans} \PY{o}{=} \PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+\end{Verbatim}
+$$W_{1000} = 1.0$$
+Veamos que tan acertada fue nuestra elección
+$$ W_{1000} - y(1)  = 0.15707963267948966$$
+
+Parece ser que nuestra aproximación inicial sobreestimó la solución.
+Usaremos el método de Newton para seguir generando aproximaciones.
+
+Definimos una función \(F : \mathbb{R} \rightarrow \mathbb{R}\) que toma
+una estimación inical de \(y_2 = y'\) y regresa la distancia a la
+solución delimitada por el BVP. De este modo, $F(0) = 0.15707963267948966$
+    En \emph{odesolver}, definimos la función "shooting" que toma una
+función, un valor inicial de \(y_1\), una aproximación inicial de
+\(y_2\) y la la solución del BVP y crea la función F, para después
+aplicar el método de Newton hasta encontrar una raíz, o bien, encontrar
+el valor inicial de \(y_2\) que hace que se satisfaga el BVP. Esto nos da la siguiente tabla:
+
+\begin{center}
+\begin{tabular}{c| r r}
+\hline
+Iteracion & Pendiente & Error \\
+\hline
+1 & -0.1571058117415369 & 0.06011796937074976 \\
+2 & -0.1136129484483078 & 0.015605062058363206 \\
+3 & -0.12257599202933653 & 0.0012971130776441298 \\
+4 & -0.1233885530092585 &  3.0275526610390457e-05 \\
+5 & -0.1233700198445987 & 5.7558321331363516e-08 \\
+6 & -0.12337005501206845 & 2.5480728638171968e-12 \\
+\hline
+\end{tabular}
+\end{center}
+
+Observamos que con esta aproximación inicial se satisface el BVP con un error menor a 1e-10. Ademas, podemos observar el comportamiento del error y las pendientes aproximadas en las siguientes graficas:
+
+    \begin{center}
+    \includegraphics{fig 6.1.png}
+    \end{center}
+    
+   \begin{center}
+    \includegraphics{fig 6.2.png}
+    \end{center}
 
     % Add a bibliography block to the postdoc
     

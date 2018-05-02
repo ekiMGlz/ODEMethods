@@ -1,5 +1,3 @@
-# coding: utf-8
-
 import sys
 sys.path.append('../')
 import numpy as np
@@ -84,6 +82,8 @@ print(aprox)
 
 plt.scatter(range(7), [0]+aprox)
 plt.title("Aproximaciones de y' inicial generadas por el método de Newton")
+plt.xlabel('Iteracion')
+plt.ylabel('y\'')
 plt.show()
 
 # In[15]:
@@ -94,10 +94,10 @@ print(errors)
 
 plt.scatter(range(7), [F(0)]+errors)
 plt.title("Error generado por cada aproximación, usando RK4 con 1000 pasos")
+plt.xlabel('Iteracion')
+plt.ylabel('Error')
 plt.show()
 
-
-# In[ ]:
 
 
 
