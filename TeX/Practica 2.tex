@@ -339,7 +339,6 @@ aproximada:
     \begin{center}
     \includegraphics{fig 1.1.png}
     \end{center}
-    { \hspace*{\fill} \\}
     
     Vemos que la solucion aproximada, auque sigue la direccion general,
 siempre va por debajo de la solucion verdadera. Esto se debe a que
@@ -574,7 +573,105 @@ Y vemos que en efecto la reducción del error de \(h_1\) a \(h_2=\frac{h_1}{10}\
 
 \section*{Ejercicio 4}
 
+Dado el PVI:
 
+\begin{equation} \label{eq:5}
+y'= 5y  -3y^2 \qquad y(0) = 1/2 \qquad t\in [0,20] 
+\end{equation}
+
+Buscamos las soluciones de equilibrio y* (raíces de nuestra función f):
+
+\[y'=5y  -3y^2=0 \Rightarrow (5-3y)y=0 \Rightarrow y_1^*=0,y_2^*=5/3\]
+
+Como podemos observar en la siguiente grafica:
+
+    \begin{center}
+    \includegraphics{fig 4.1.png}
+    \end{center}
+    
+    El punto \(y_1^*\) es un repulsor mientras que el punto \(y_2^*\) es un
+atractor. Esto se debe a lo siguiente:
+
+Sea $\epsilon < 0 $ y $f(t,y):=y'= 5y
+-3y^{2}$ Veamos el comportamiento de \(f(t,y)\) alrededor de las
+soluciones de equilibrio: \(y_1^*=0,y_2^*=5/3\)
+
+\[f(t,y_1^*+\epsilon)=f(t,\epsilon)= 5\epsilon -3\epsilon^2 \quad...\quad (1)\]
+\[f(t,y_1^*-\epsilon)=f(t,-\epsilon)= -5\epsilon -3\epsilon^2 \quad...\quad (2)\]
+Supongamos \(0<\epsilon<1\)
+\[ (1) \Rightarrow 0<\epsilon^2<\epsilon \Rightarrow -3\epsilon<-3\epsilon^2<0 \Rightarrow -3\epsilon+ 5\epsilon < 5\epsilon -3\epsilon^2 \]
+\[ \Rightarrow 0<2\epsilon<5\epsilon -3\epsilon^2 = f(t,y_1^*+\epsilon)\]
+\[ (2)  \Rightarrow  f(t,y_1^*-\epsilon) =-5\epsilon -3\epsilon^2 <0\]
+Por lo tanto, \(y_1^*=0\) es repulsor
+
+    \[f(t,y_2^*+\epsilon)=f\left(t,\frac{5}{3}+\epsilon\right)= 5\left( \frac{5}{3}+\epsilon  \right) -3\left( \frac{5}{3}+\epsilon  \right)^2 \quad...\quad (3)\]
+\[f(t,y_2^*-\epsilon)=f\left(t,\frac{5}{3}-\epsilon\right)= 5\left( \frac{5}{3}-\epsilon  \right) -3\left( \frac{5}{3}-\epsilon  \right)^2 \quad...\quad (4)\]
+Supongamos \(0<\epsilon<1\)
+\[ (3),(2) \Rightarrow f(t,y_2^*+\epsilon)= -5\epsilon -3\epsilon^2 < 0\]
+\[ (4),(1)  \Rightarrow  f(t,y_2^*-\epsilon) =5\epsilon -3\epsilon^2 <0\]
+Por lo tanto, \(y_2^*=\frac{5}{3}\) es atractor
+
+    Ahora apliquemos el metodo de Euler implicito con paso \(h=0.5\) a
+nuestra función
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{n}{f} \PY{o}{=} \PY{k}{lambda} \PY{n}{t}\PY{p}{,} \PY{n}{y} \PY{p}{:} \PY{l+m+mi}{5}\PY{o}{*}\PY{n}{y}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{y}\PY{o}{*}\PY{n}{y}
+        \PY{n}{I} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}
+        \PY{n}{y0} \PY{o}{=} \PY{l+m+mf}{0.5}
+        
+        
+        \PY{n}{T}\PY{p}{,} \PY{n}{W} \PY{o}{=} \PY{n}{odesolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{f}\PY{p}{,}\PY{n}{y0}\PY{p}{,}\PY{n}{I}\PY{p}{,}\PY{l+m+mi}{40}\PY{p}{,}\PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Implicit Euler}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{Latex}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Obtenemos una aproximación para y(20): }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}w\PYZus{}}\PY{l+s+si}{\PYZob{}40\PYZcb{}}\PY{l+s+s1}{\PYZdl{} = }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{W}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{40}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+Obtenemos una aproximación para y(20): $w_{40}$ = 1.6666666666666667, con lo que podemos observar que el método de Euler implícito con \(h=1/2\) converge hacia \(y_2^*=5/3\).
+
+Ahora utilizemos el método de Euler explícito, con pasos
+\(F(w;h)=w_{i+1}=w_i+h[5w_i-3w_i^2]\) y pasos
+\(h \in \{1/6,1/5,1/4,1/2\}\)
+
+Obtenemos aproximaciónes para y(20) de:   
+\begin{align*}
+w_{40}&=2.04166028173897 \\
+w_{80}&=1.6666666666666665\\
+w_{100}&=1.6666666666666667\\
+w_{120}&=1.6666666666666667
+\end{align*}
+    
+
+    El método converge a \(w_*=5/3\) con h ∈ \{1/6,1/5,1/4\} pues
+\[\vert \frac{\partial F(w;h)}{\partial w}\vert |_{w=w^*}=|1+h[5-6w]|_{w=w^*}|=|1+h[5-6w]|_{w=5/3}|=|1+h[-5]|<1\Leftrightarrow -1<1-5h<1\Leftrightarrow -2<-5h<0\Leftrightarrow 0<h<2/5\]
+y \(0<1/6<1/5<1/4<2/5\) lo que implica que \(w_*=5/3\) es aractor para
+estos valores de h.
+
+Pero
+\[|\frac{\partial F(w;h)}{\partial w}||_{w=w^*}|=|1+h[5-6w]|_{w=w^*}|=|1+h[5-6w]|_{w=5/3}|=|1+h[-5]|>1\Leftrightarrow 1-5h<-1 \quad ó \quad 1-5h>1\Leftrightarrow h<0 \quad ó \quad h>2/5\]
+y \(1/2>2/5\) lo que implica que \(w_*=5/2\) es un repulsor para h=1/2. Por lo tanto el método funciona bien para h\textless{}2/5
+
+Finalmente apliquemos el método RK2/3 adaptativo con tolerancia relativa
+tol=1/10 y tamaño del paso inicial h=0.5. Obtenemos la aproximacion para y(20)  $w_{40}=1.6600602488587208$
+
+Por otro lado si tomamos tol=1/100 y tamaño del paso inicial h=0.5. Obtenemos la aproximacion y(20) de  $w_{43}=1.6667133813293837$
+
+Podemos ver que en solo 43 pasos RK2/3 alcanzo la tolerancia deseada,
+mientras que con los mismos 40 pasos Euler Explicito es stiff. Por otro
+lado, Euler Implicito convirgio al punto fijo mas rapidamente,
+alcanzando una mucho mayor precision en los mismos pasos. En este caso,
+el metodo implicito resulto mejor para la aproximacion.
+
+Ahora veeamos en que casos no es stiff el metodo. Para el RK2/3 sin
+extrapolación se utilizan las aproximaciones que te da el RK2 (Trapecio
+Explícito). Por lo tanto en este caso queremos ver para que valores de h
+el método RK2/3 sin extrapolación (RK2) es STIFF en \(w^*=\frac{5}{3}\).
+
+\[F(w;h)=w_{i+1}=w_i+\frac{h}{2}[5w_i-3w_i^2 + f\left(t_i+h,w_i+h\left(5w_i-3w_i^2 \right) \right)]\]
+\[\Rightarrow F(w;h)= w_i+\frac{h}{2}[5w_i-3w_i^2 + \left(5(w_i+5hw_i-3hw_i^2)-3(w_i+5hw_i-3hw_i^2)^2\right)]\]
+
+Queremos: \(\frac{\partial F(w;h)}{\partial w} |_{w=w^*}<1\) con
+\(w^*=5/3\)
+
+\[\frac{\partial F(w;h)}{\partial w} |_{w=w^*}=1-\frac{5h}{2}(2-5h)<1 \Rightarrow  -\frac{5h}{2}(2-5h)<0 \]
+\[ \Rightarrow 0 < h<\frac{1}{5} \]
 
 \section*{Ejercicio 5}
 
